@@ -21,3 +21,11 @@ An interactive Power BI dashboard designed to analyze pricing trends and invento
 1. Clone this repository to your local machine:
    ```bash
    git clone [https://github.com/atharvagkulkarni2004-spec/Spinny-used-Car-Analysis.git](https://github.com/atharvagkulkarni2004-spec/Spinny-used-Car-Analysis.git)
+
+
+   👨‍💻 Author
+Atharva Kulkarni
+
+YouTube: Atharva DataOps (Check out my tutorials on Data Analytics, Power BI, Python, and SQL!)
+
+LinkedIn: https://www.linkedin.com/in/atharva-g-kulkarni/

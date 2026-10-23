@@ -1,0 +1,47 @@
+relationship AutoDetected_778fe1cf-218e-4001-9850-89a94d3659c9
+	fromColumn: Sales.Customer_ID
+	toColumn: Customer.Customer_ID
+
+relationship AutoDetected_021691c5-6932-4b43-8320-13f770e05228
+	fromColumn: Inventory.Product_ID
+	toColumn: Product.Product_ID
+
+relationship AutoDetected_2f4db963-1bc6-40eb-8d0b-8ce042cf1002
+	fromColumn: Sales.Product_ID
+	toColumn: Product.Product_ID
+
+relationship c75bb331-f449-4961-a646-fe240ab7ae66
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sales.Order_Date
+	toColumn: LocalDateTable_ee9ab424-25f6-42fb-848a-86bc319d1aca.Date
+
+relationship 5d28097f-09d9-47d7-acf8-d5ab716f0531
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customer.cal
+	toColumn: LocalDateTable_f5862ce3-a297-437a-bfd6-1c967f592710.Date
+
+relationship 34037776-a28a-4eba-ae86-885d9885463b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customer.column
+	toColumn: LocalDateTable_70835099-f6b9-47a1-bed7-e1e636b18aef.Date
+
+relationship 313ceb13-ba58-40f6-84f0-16ccd420185e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sales.Or_date
+	toColumn: LocalDateTable_31643557-dec6-4101-96fb-d6c64105225a.Date
+
+relationship edac9604-d5d9-40a6-8e2a-e24dd027cfef
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sales.next_date
+	toColumn: LocalDateTable_7435bf68-3f32-4219-83bb-1a8d6e420198.Date
+
+relationship 6155378f-4775-49a6-b53d-e1f0d817a069
+	joinOnDateBehavior: datePartOnly
+	fromColumn: calander.Date
+	toColumn: LocalDateTable_50297b06-9dee-4be8-9404-3e8c5d389e9d.Date
+
+relationship 6f7c9d50-eca3-410f-83f6-8133aefc5558
+	joinOnDateBehavior: datePartOnly
+	fromColumn: calender_auto.Date
+	toColumn: LocalDateTable_8f2c9e05-475c-4334-be19-edec9057b57f.Date
+

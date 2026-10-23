@@ -1,0 +1,164 @@
+table Sales
+	lineageTag: d8b9520f-20ab-4fc5-b160-2cbd24534292
+
+	measure measure = SUMX(Sales,Sales[Sales_Amount]-Sales[Discount])
+		formatString: 0
+		lineageTag: b32af5c4-d220-4392-acaf-41c9b1f6cf85
+
+	column Order_ID
+		dataType: string
+		lineageTag: 7d4b434e-fb63-4611-95ab-f7aefd211aa5
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Date
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 869cffbe-49bc-48a8-a7d4-aafadabee85e
+		summarizeBy: none
+		sourceColumn: Order_Date
+
+		variation Variation
+			isDefault
+			relationship: c75bb331-f449-4961-a646-fe240ab7ae66
+			defaultHierarchy: LocalDateTable_ee9ab424-25f6-42fb-848a-86bc319d1aca.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Customer_ID
+		dataType: string
+		lineageTag: af8ba117-7ece-4d0f-9839-a87fa8d17130
+		summarizeBy: none
+		sourceColumn: Customer_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_ID
+		dataType: string
+		lineageTag: a9ca2412-c201-47fd-a98f-7844f5219f57
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 92fda1d0-6bb9-4569-83b6-d12c924f15e0
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales_Amount
+		dataType: int64
+		formatString: #,0
+		lineageTag: f8888f39-c09b-4b39-8794-b762d5e0a807
+		summarizeBy: sum
+		sourceColumn: Sales_Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: int64
+		formatString: 0
+		lineageTag: 32c5b97c-abba-4b32-baf5-2b01eb4ace3e
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Profit
+		dataType: int64
+		formatString: 0
+		lineageTag: d7e856f3-2830-4513-b027-84d4b8e518d3
+		summarizeBy: sum
+		sourceColumn: Profit
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel
+		dataType: string
+		lineageTag: 09af426d-5ddb-4a51-82f2-2fb8b0b74c64
+		summarizeBy: none
+		sourceColumn: Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column revenue = Sales[Sales_Amount]-Sales[Discount]
+		formatString: #,0
+		lineageTag: ef3daddb-c848-4220-abbb-20c77f73ab76
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Or_date = TODAY()
+		formatString: General Date
+		lineageTag: 0e3c7091-6c63-4f6a-8f73-8406e9f41e54
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 313ceb13-ba58-40f6-84f0-16ccd420185e
+			defaultHierarchy: LocalDateTable_31643557-dec6-4101-96fb-d6c64105225a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column next_date = EDATE(Sales[Or_date],3)
+		formatString: General Date
+		lineageTag: 113cb10b-1d30-4c9a-9b47-854e1ca14d16
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: edac9604-d5d9-40a6-8e2a-e24dd027cfef
+			defaultHierarchy: LocalDateTable_7435bf68-3f32-4219-83bb-1a8d6e420198.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery = DATEDIFF(Sales[Order_Date],TODAY(),YEAR)
+		formatString: 0
+		lineageTag: e63789d0-6d0c-4d50-86e9-1bec8006e62c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column budget =
+			
+			SWITCH(
+			
+			
+			    TRUE(),
+			       Sales[Sales_Amount]>=1000000,"luxery",
+			       Sales[Sales_Amount]>=500000,"Semi-Luxery",
+			       Sales[Sales_Amount]>=250000,"mid",
+			       Sales[Sales_Amount]>=0,"low"
+			
+			)
+		lineageTag: 56d2da28-df20-445d-8142-adfc3652f255
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ATHARVA\OneDrive\Desktop\Power BI Docs\spinny_car.xlsx"), null, true),
+				    Sales_Sheet = Source{[Item="Sales",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sales_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order_ID", type text}, {"Order_Date", type date}, {"Customer_ID", type text}, {"Product_ID", type text}, {"Quantity", Int64.Type}, {"Sales_Amount", Int64.Type}, {"Discount", Int64.Type}, {"Profit", Int64.Type}, {"Channel", type text}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"Order_Date", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

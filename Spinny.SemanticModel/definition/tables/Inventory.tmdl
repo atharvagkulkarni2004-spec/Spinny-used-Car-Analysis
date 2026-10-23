@@ -1,0 +1,62 @@
+table Inventory
+	lineageTag: 67be5923-19e4-45a6-813f-144f44cab254
+
+	column Product_ID
+		dataType: string
+		lineageTag: 003affb7-9389-4e7d-b3b2-d556f3995df1
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Opening_Stock
+		dataType: int64
+		formatString: 0
+		lineageTag: 9c23dd5a-8891-4813-bf65-b319f9425056
+		summarizeBy: sum
+		sourceColumn: Opening_Stock
+
+		annotation SummarizationSetBy = Automatic
+
+	column Received_Stock
+		dataType: int64
+		formatString: 0
+		lineageTag: 0800d064-fd89-4e6a-b4ed-66335f06c65e
+		summarizeBy: sum
+		sourceColumn: Received_Stock
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sold_Stock
+		dataType: int64
+		formatString: 0
+		lineageTag: 070f215c-f05f-40f6-b6f0-382c23a12394
+		summarizeBy: sum
+		sourceColumn: Sold_Stock
+
+		annotation SummarizationSetBy = Automatic
+
+	column Closing_Stock
+		dataType: int64
+		formatString: 0
+		lineageTag: 40adc27a-6e38-4646-95b0-f8bdfe14729a
+		summarizeBy: sum
+		sourceColumn: Closing_Stock
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Inventory = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ATHARVA\OneDrive\Desktop\Power BI Docs\spinny_car.xlsx"), null, true),
+				    Inventory_Sheet = Source{[Item="Inventory",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Inventory_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Product_ID", type text}, {"Opening_Stock", Int64.Type}, {"Received_Stock", Int64.Type}, {"Sold_Stock", Int64.Type}, {"Closing_Stock", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

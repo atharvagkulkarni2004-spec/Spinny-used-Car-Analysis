@@ -1,0 +1,130 @@
+table Customer
+	lineageTag: d51dd30b-04c9-4e00-a38e-715f92e3db72
+
+	measure 'Average Selling Price' = ```
+			AVERAGE(Product[Selling_Price])
+			
+			```
+		lineageTag: 5652ca13-424b-4fae-aed2-5e50aeacd610
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure profitp = ( AVERAGEX(sales,sales[sales_amount]/100) * sum(sales[profit]))
+		lineageTag: 66067281-b947-47b1-93cd-8659333174a2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Customer_ID
+		dataType: string
+		lineageTag: c129da19-182c-4af6-989d-4c4c9c58ed27
+		summarizeBy: none
+		sourceColumn: Customer_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 01301d80-27db-44f1-9fbe-84b5e7261e62
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: double
+		formatString: 0
+		lineageTag: 74fdb066-8262-42a8-9977-93ac1e9b7524
+		summarizeBy: sum
+		sourceColumn: Age
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 7f60d81a-92cc-4a52-b362-f03d390e0941
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 3397b4a0-f624-49f8-876b-d78817b398e6
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cs = IF(Customer[Age]>=55,"retired","working")
+		lineageTag: f85a2203-ca18-4263-b253-e43e451380f6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'sensitive information' = REPLACE(Customer[Customer_ID],4,6,"****")
+		lineageTag: 8e55a948-dcd4-49f9-853d-b18151b05871
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column cal = NOW()
+		formatString: General Date
+		lineageTag: 4025aa46-443a-4d24-be7b-ff2a05b5c423
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 5d28097f-09d9-47d7-acf8-d5ab716f0531
+			defaultHierarchy: LocalDateTable_f5862ce3-a297-437a-bfd6-1c967f592710.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column column = (Customer[cal])
+		formatString: General Date
+		lineageTag: d1d502a0-5585-43ca-a055-d21d2a997ffe
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 34037776-a28a-4eba-ae86-885d9885463b
+			defaultHierarchy: LocalDateTable_70835099-f6b9-47a1-bed7-e1e636b18aef.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age_Grp = ```
+			
+			 SWITCH(
+			    TRUE(),
+			    Customer[Age]>55,"Retaired",
+			    Customer[Age]<55 && Customer[Age]>40 , "Mid Age",
+			    Customer[Age]>18 && Customer[Age]<40,"Young"
+			
+			
+			
+			
+			
+			
+			)
+			
+			```
+		lineageTag: c56a1f02-d087-4909-b335-b35b15311994
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ATHARVA\OneDrive\Desktop\Power BI Docs\spinny_car.xlsx"), null, true),
+				    Customer_Sheet = Source{[Item="Customer",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Customer_Sheet, [PromoteAllScalars=true])
+				in
+				    #"Promoted Headers"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

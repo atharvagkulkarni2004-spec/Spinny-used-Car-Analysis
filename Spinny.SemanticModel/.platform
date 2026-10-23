@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Spinny"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2fa5e9ad-8d98-45ba-a074-74c7124d010f"
+  }
+}

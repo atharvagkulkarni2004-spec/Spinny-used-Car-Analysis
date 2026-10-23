@@ -1,0 +1,23 @@
+table calander
+	lineageTag: d110bb9a-697c-445f-ac3c-13d20e51bb51
+
+	column Date
+		formatString: General Date
+		lineageTag: f3bf2aa6-f0e5-4df9-9e6e-1e791ca74ea8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 6155378f-4775-49a6-b53d-e1f0d817a069
+			defaultHierarchy: LocalDateTable_50297b06-9dee-4be8-9404-3e8c5d389e9d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition calander = calculated
+		mode: import
+		source = CALENDAR(DATE(2025,01,01),DATE(2025,12,31))
+
+	annotation PBI_Id = b38c7284736c434ca67afb7512b6803b
+
